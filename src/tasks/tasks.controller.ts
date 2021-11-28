@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Body, Param, Delete, Redirect } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Redirect, Patch } from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import { Task } from './task.model';
+import { Task, TaskStatus } from './task.model';
 import { CreateTaskDto } from './dto/create-task.dto';
 
 @Controller('tasks')
@@ -26,8 +26,17 @@ export class TasksController {
 
   @Delete('/:id')
   deleteTask(@Param('id') id: string): void{
-    this.tasksService.deleteTask(id);
-    
+    this.tasksService.deleteTask(id); 
+  }
+
+  @Patch('/:id/status')
+  updateTask(
+    @Param('id') id: string, 
+    // this got a little confusing, why is it from the Body?
+    //NOTE:  can't use DTO because we're grabbing dif params
+    @Body('status') status: TaskStatus
+    ): Task {
+    return this.tasksService.updateTask(id, status); 
   }
 
   // returns entire request body
