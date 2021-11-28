@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Redirect } from '@nestjs/common';
 import { Task, TaskStatus } from './task.model';
 import { v4 as uuid } from 'uuid';
 import { CreateTaskDto} from './dto/create-task.dto'
@@ -9,6 +9,14 @@ export class TasksService {
   
   getAllTasks(): Task[]{
     return this.tasks
+  }
+  //not entirely sure how getOneTask has a type of Task
+  getOneTask(id: string): Task{
+    return this.tasks.find(x=>x.id === id)
+  }
+
+  deleteTask(id: string): void{
+    this.tasks = this.tasks.filter(x=>x.id !== id);   
   }
 
   createTask(createTaskDto: CreateTaskDto): Task{
