@@ -1,8 +1,18 @@
-import { Controller, Get, Post, Body, Param, Delete, Patch, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Patch,
+  Query,
+} from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { Task, TaskStatus } from './task.model';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
+import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 
 @Controller('tasks')
 export class TasksController {
@@ -17,34 +27,47 @@ export class TasksController {
   getTasks(@Query() filterDto: GetTasksFilterDto): Task[] {
     //if we have any filters defined, call tasksService.getTasksWithFilter
     //NOTE:  look up Object.keys
-    if (Object.keys(filterDto).length){
-     return this.tasksService.getTaskWithFilters(filterDto);
-    }else{
-    //otherwise get all tasks
-    return this.tasksService.getAllTasks();}
-  };
+    if (Object.keys(filterDto).length) {
+      return this.tasksService.getTaskWithFilters(filterDto);
+    } else {
+      //otherwise get all tasks
+      return this.tasksService.getAllTasks();
+    }
+  }
 
   //3 variations on id
-  // '/:id', 'id', id 
+  // '/:id', 'id', id
   @Get('/:id')
-  getOneTask(@Param('id') id: string): Task{
+  getOneTask(@Param('id') id: string): Task {
     return this.tasksService.getOneTask(id);
   }
 
   @Delete('/:id')
-  deleteTask(@Param('id') id: string): void{
-    this.tasksService.deleteTask(id); 
+  deleteTask(@Param('id') id: string): void {
+    this.tasksService.deleteTask(id);
   }
 
   @Patch('/:id/status')
   updateTask(
-    @Param('id') id: string, 
+    @Param('id') id: string,
     // this got a little confusing, why is it from the Body?
-    //NOTE:  can't use DTO because we're grabbing dif params
-    @Body('status') status: TaskStatus
-    ): Task {
-    return this.tasksService.updateTask(id, status); 
+    @Body() updateTaskStatusDto: UpdateTaskStatusDto,
+  ): Task {
+    const { status } = updateTaskStatusDto;
+    // not really sure how this part works
+    // destructuring
+    return this.tasksService.updateTask(id, status);
   }
+
+  // @Patch('/:id/status')
+  // updateTask(
+  //   @Param('id') id: string,
+  //   // this got a little confusing, why is it from the Body?
+  //   //NOTE:  can't use DTO because we're grabbing dif params
+  //   @Body('status') status: TaskStatus
+  //   ): Task {
+  //   return this.tasksService.updateTask(id, status);
+  // }
 
   // returns entire request body
   // problem is that there are no strong params
@@ -61,6 +84,4 @@ export class TasksController {
   // ): Task {
   //   return this.tasksService.createTask(title, description)
   // }
-
-
 }
