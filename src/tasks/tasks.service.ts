@@ -46,6 +46,16 @@ export class TasksService {
     return found;
   }
 
+  async deleteTask(id: string): Promise<void> {
+    const taskToDelete = await this.tasksRepository.delete(id)
+    //this will work because getOneTask will throw error
+    if (taskToDelete.affected === 0){
+      throw new NotFoundException()
+    }
+  //  console.log(taskToDelete)
+  }
+
+
   // deleteTask(id: string): void {
   //   const found = this.getOneTask(id);
   //   //this will work because getOneTask will throw error
