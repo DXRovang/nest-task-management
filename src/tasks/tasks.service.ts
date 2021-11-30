@@ -10,8 +10,8 @@ import { Task } from './task.entity';
 export class TasksService {
   constructor(
     @InjectRepository(TasksRepository)
-    private tasksRepository: TasksRepository
-  ){}
+    private tasksRepository: TasksRepository,
+  ) {}
   // getAllTasks(): Task[] {
   //   return this.tasks;
   // }
@@ -37,25 +37,14 @@ export class TasksService {
   //   }
   // }
 
+  //not entirely sure how getTaskById has a Promise type of Task
   async getTaskById(id: string): Promise<Task> {
     const found = await this.tasksRepository.findOne(id);
-    if (!found){
-      throw new NotFoundException()
+    if (!found) {
+      throw new NotFoundException();
     }
     return found;
   }
-  // //not entirely sure how getOneTask has a type of Task
-  // getOneTask(id: string): Task {
-  //   //try to get task
-  //   //if not found, throw 404 error
-  //   //otherwise return task
-  //   const found = this.tasks.find((x) => x.id === id);
-
-  //   if (!found) {
-  //     throw new NotFoundException();
-  //   }
-  //   return found;
-  // }
 
   // deleteTask(id: string): void {
   //   const found = this.getOneTask(id);
@@ -70,16 +59,8 @@ export class TasksService {
   //   return task;
   // }
 
-  // createTask(createTaskDto: CreateTaskDto): Task {
-  //   const { title, description } = createTaskDto;
+  createTask(createTaskDto: CreateTaskDto): Promise<Task> {
+    return this.tasksRepository.createTask(createTaskDto);
+  }
 
-  //   const task: Task = {
-  //     id: uuid(),
-  //     title,
-  //     description,
-  //     status: TaskStatus.OPEN,
-  //   };
-  //   this.tasks.push(task);
-  //   return task;
-  // }
 }

@@ -19,10 +19,10 @@ import { Task } from './task.entity';
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
-  // @Post()
-  // createTask(@Body() createTaskDto: CreateTaskDto): Task {
-  //   return this.tasksService.createTask(createTaskDto);
-  // }
+  @Post()
+  createTask(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
+    return this.tasksService.createTask(createTaskDto);
+  }
 
   // @Get()
   // getTasks(@Query() filterDto: GetTasksFilterDto): Task[] {
@@ -36,17 +36,12 @@ export class TasksController {
   //   }
   // }
 
-    @Get('/:id')
-    getTaskById(@Param('id') id: string): Promise<Task>{
-      return this.tasksService.getTaskById(id);
-    }
-
-  // //3 variations on id
-  // // '/:id', 'id', id
-  // @Get('/:id')
-  // getOneTask(@Param('id') id: string): Task {
-  //   return this.tasksService.getOneTask(id);
-  // }
+  //3 variations on id
+  // '/:id', 'id', id
+  @Get('/:id')
+  getTaskById(@Param('id') id: string): Promise<Task> {
+    return this.tasksService.getTaskById(id);
+  }
 
   // @Delete('/:id')
   // deleteTask(@Param('id') id: string): void {
