@@ -47,27 +47,21 @@ export class TasksService {
   }
 
   async deleteTask(id: string): Promise<void> {
+    // NOTE:  You can use void in a Promise!
     const taskToDelete = await this.tasksRepository.delete(id)
-    //this will work because getOneTask will throw error
+    // NOTE:  found .affected by console.log
     if (taskToDelete.affected === 0){
       throw new NotFoundException()
     }
-  //  console.log(taskToDelete)
+ 
   }
 
-
-  // deleteTask(id: string): void {
-  //   const found = this.getOneTask(id);
-  //   //this will work because getOneTask will throw error
-  //   this.tasks = this.tasks.filter((x) => x.id !== id);
-  // }
-
-  // updateTask(id: string, status: TaskStatus): Task {
-  //   //update the task
-  //   const task = this.getOneTask(id);
-  //   task.status = status;
-  //   return task;
-  // }
+  async updateTask(id: string, status: TaskStatus): Promise<Task> {
+    const task = await this.getTaskById(id);
+    task.status = status;
+    await this.tasksRepository.save(task);
+    return task;
+  }
 
   createTask(createTaskDto: CreateTaskDto): Promise<Task> {
     return this.tasksRepository.createTask(createTaskDto);

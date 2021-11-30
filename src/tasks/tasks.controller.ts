@@ -48,17 +48,17 @@ export class TasksController {
     return this.tasksService.deleteTask(id);
   }
 
-  // @Patch('/:id/status')
-  // updateTask(
-  //   @Param('id') id: string,
-  //   // this got a little confusing, why is it from the Body?
-  //   @Body() updateTaskStatusDto: UpdateTaskStatusDto,
-  // ): Task {
-  //   const { status } = updateTaskStatusDto;
-  //   // not really sure how this part works
-  //   // destructuring
-  //   return this.tasksService.updateTask(id, status);
-  // }
+  @Patch('/:id/status')
+  updateTask(
+    @Param('id') id: string,
+    @Body() updateTaskStatusDto: UpdateTaskStatusDto,
+  ): Promise<Task> {
+    const { status } = updateTaskStatusDto;
+    // destructuring
+    return this.tasksService.updateTask(id, status);
+  }
+
+}
 
   // // @Patch('/:id/status')
   // // updateTask(
@@ -85,4 +85,3 @@ export class TasksController {
   // // ): Task {
   // //   return this.tasksService.createTask(title, description)
   // // }
-}
