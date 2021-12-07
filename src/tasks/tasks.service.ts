@@ -12,30 +12,10 @@ export class TasksService {
     @InjectRepository(TasksRepository)
     private tasksRepository: TasksRepository,
   ) {}
-  // getAllTasks(): Task[] {
-  //   return this.tasks;
-  // }
 
-  // getTaskWithFilters(filterDto: GetTasksFilterDto): Task[] {
-  //   // destructturing, remind yourself
-  //   const { status, search } = filterDto;
-  //   // define temp arr to hold result
-  //   let tasks = this.getAllTasks();
-  //   // do something w status, search
-  //   if (status) {
-  //     tasks = tasks.filter((task) => (task.status = status));
-  //   }
-  //   if (search) {
-  //     tasks = tasks.filter((task) => {
-  //       if (task.title.includes(search) || task.description.includes(search)) {
-  //         return true;
-  //       }
-  //       return false;
-  //     });
-  //     // return
-  //     return tasks;
-  //   }
-  // }
+  getTasks(filterDto: GetTasksFilterDto): Promise<Task[]> {
+    return this.tasksRepository.getTasks(filterDto);
+  }
 
   //not entirely sure how getTaskById has a Promise type of Task
   async getTaskById(id: string): Promise<Task> {
@@ -48,12 +28,11 @@ export class TasksService {
 
   async deleteTask(id: string): Promise<void> {
     // NOTE:  You can use void in a Promise!
-    const taskToDelete = await this.tasksRepository.delete(id)
+    const taskToDelete = await this.tasksRepository.delete(id);
     // NOTE:  found .affected by console.log
-    if (taskToDelete.affected === 0){
-      throw new NotFoundException()
+    if (taskToDelete.affected === 0) {
+      throw new NotFoundException();
     }
- 
   }
 
   async updateTask(id: string, status: TaskStatus): Promise<Task> {
@@ -66,5 +45,29 @@ export class TasksService {
   createTask(createTaskDto: CreateTaskDto): Promise<Task> {
     return this.tasksRepository.createTask(createTaskDto);
   }
-
 }
+
+// getAllTasks(): Task[] {
+//   return this.tasks;
+// }
+
+// getTaskWithFilters(filterDto: GetTasksFilterDto): Task[] {
+//   // destructturing, remind yourself
+//   const { status, search } = filterDto;
+//   // define temp arr to hold result
+//   let tasks = this.getAllTasks();
+//   // do something w status, search
+//   if (status) {
+//     tasks = tasks.filter((task) => (task.status = status));
+//   }
+//   if (search) {
+//     tasks = tasks.filter((task) => {
+//       if (task.title.includes(search) || task.description.includes(search)) {
+//         return true;
+//       }
+//       return false;
+//     });
+//     // return
+//     return tasks;
+//   }
+// }

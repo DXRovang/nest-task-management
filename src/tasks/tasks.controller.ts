@@ -24,17 +24,10 @@ export class TasksController {
     return this.tasksService.createTask(createTaskDto);
   }
 
-  // @Get()
-  // getTasks(@Query() filterDto: GetTasksFilterDto): Task[] {
-  //   //if we have any filters defined, call tasksService.getTasksWithFilter
-  //   //NOTE:  look up Object.keys
-  //   if (Object.keys(filterDto).length) {
-  //     return this.tasksService.getTaskWithFilters(filterDto);
-  //   } else {
-  //     //otherwise get all tasks
-  //     return this.tasksService.getAllTasks();
-  //   }
-  // }
+  @Get()
+  getTasks(@Query() filterDto: GetTasksFilterDto): Promise<Task[]> {
+    return this.tasksService.getTasks(filterDto)
+  }
 
   //3 variations on id
   // '/:id', 'id', id
@@ -59,6 +52,18 @@ export class TasksController {
   }
 
 }
+
+// @Get()
+// getTasks(@Query() filterDto: GetTasksFilterDto): Task[] {
+//   //if we have any filters defined, call tasksService.getTasksWithFilter
+//   //NOTE:  look up Object.keys
+//   if (Object.keys(filterDto).length) {
+//     return this.tasksService.getTaskWithFilters(filterDto);
+//   } else {
+//     //otherwise get all tasks
+//     return this.tasksService.getAllTasks();
+//   }
+// }
 
   // // @Patch('/:id/status')
   // // updateTask(
